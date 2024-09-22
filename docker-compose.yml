@@ -1,0 +1,20 @@
+---
+version: "3.6"
+services:
+  tcc:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+    image: tcc-image
+    command: python app
+    container_name: tcc
+    working_dir: /app
+    networks:
+      - tcc-network
+    volumes:
+      - .:/app
+
+networks:
+  tcc-network:
+    external: false
