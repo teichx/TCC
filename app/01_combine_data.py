@@ -1,16 +1,19 @@
 import os
 import zipfile
+import py7zr
 
 import pandas
 
 
 def get_items():
-    folder_path = 'data/raw'
+    folder_path = 'data/tce_rs'
     for file_name in os.listdir(folder_path):
-        if not file_name.endswith('.zip'):
+        if not file_name.endswith('.xml.7z'):
             continue
         zip_path = os.path.join(folder_path, file_name)
 
+        with py7zr.SevenZipFile(zip_path, mode='r') as zip_ref:
+            zip_ref.extractall()
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             file_items_name = f'{file_name.removesuffix('.zip')}_NotaFiscalItem.csv'
             with zip_ref.open(file_items_name) as file:
